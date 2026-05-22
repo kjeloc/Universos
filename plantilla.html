@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Compendio de Cuentos - Universos Unidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* --- CONFIGURACIÓN BASE PARA IMPRESIÓN --- */
+        @page { size: A4; margin: 0; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #1a1a1a; display: flex; flex-direction: column; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        /* --- ESTILO DE PÁGINA (TINTA SEPIA / MANUSCRITO OLVIDADO) --- */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background-color: #faf3e0;
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
+            color: #3b2f2f;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            margin: 20mm 0;
+            padding: 22mm 25mm 22mm 25mm; /* Padding vertical optimizado */
+            font-family: 'Spectral', serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+        }
+
+        /* Capa de textura de papel antiguo */
+        .page::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; bottom: 0; 
+            background-image: url('https://www.transparenttextures.com/patterns/exclusive-paper.png'); 
+            opacity: 0.35; 
+            z-index: 2; 
+            pointer-events: none; 
+        }
+
+        /* Contenedor de página A4 */
+        .page-img {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden; /* Evita que la imagen se desborde */
+            margin-bottom: 10mm;
+            background-color: #000;
+        }
+         /* Clase para imágenes a página completa */
+        .full-page-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta la imagen para cubrir todo el espacio sin deformarse */
+            object-position: center;
+        }
+        /* Ornamentos de las esquinas góticas */
+        .corner { position: absolute; width: 45mm; height: 45mm; z-index: 10; pointer-events: none; background: url('https://www.transparenttextures.com/patterns/food.png'); opacity: 0.08; }
+        .t-l { top: 10mm; left: 10mm; border-left: 1.5px solid #a67c52; border-top: 1.5px solid #a67c52; border-radius: 8mm 0 0 0; }
+        .t-r { top: 10mm; right: 10mm; border-right: 1.5px solid #a67c52; border-top: 1.5px solid #a67c52; border-radius: 0 8mm 0 0; }
+        .b-l { bottom: 10mm; left: 10mm; border-left: 1.5px solid #a67c52; border-bottom: 1.5px solid #a67c52; border-radius: 0 0 0 8mm; }
+        .b-r { bottom: 10mm; right: 10mm; border-right: 1.5px solid #a67c52; border-bottom: 1.5px solid #a67c52; border-radius: 0 0 8mm 0; }
+
+        /* --- TIPOGRAFÍA Y DISEÑO INTERIOR (AJUSTES DE TAMAÑO Y ESPACIADO) --- */
+        .header-meta { display: flex; justify-content: space-between; font-family: 'Cinzel Decorative'; font-size: 8pt; color: #a67c52; margin-bottom: 8mm; z-index: 15; border-bottom: 1px solid rgba(166, 124, 82, 0.25); padding-bottom: 4px; }
+        .chapter-title { font-family: 'Playfair Display', serif; font-size: 18pt; font-weight: 700; margin-bottom: 3mm; z-index: 15; text-align: center; color: #3b2f2f; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Autor debajo del título */
+        .author-meta { font-family: 'Spectral', serif; font-size: 10pt; font-style: italic; color: #a67c52; text-align: center; margin-bottom: 6mm; z-index: 15; letter-spacing: 1px; }
+
+        .text-body { font-size: 10pt; line-height: 1.4; text-align: justify; z-index: 15; position: relative; }
+        .text-body p { margin-top: 0; margin-bottom: 8px; text-indent: 15px; } /* Indentación clásica */
+        .text-body p.no-indent { text-indent: 0; } /* Párrafo sin sangría */
+        
+        .drop-cap::first-letter { float: left; font-family: 'Playfair Display', serif; font-size: 58pt; line-height: 44pt; padding: 3px 10px 0 0; font-weight: 900; color: #704214; text-shadow: 2px 2px 0px #e2c08d; }
+        .ornament { text-align: center; margin: 4mm 0; font-size: 20pt; z-index: 15; opacity: 0.5; color: #a67c52; }
+        .page-num { position: absolute; bottom: 10mm; width: 100%; left: 0; text-align: center; font-family: 'Cinzel Decorative'; font-size: 9pt; color: #a67c52; z-index: 15; letter-spacing: 3px; }
+        
+        @media print {
+            body { background: none; }
+            .page { margin: 0; box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body> 
+    <!-- PORTADA -->
+    <div class="page-img">
+        <img src="https://i.imgur.com/2TFmVG7.jpeg" class="full-page-img" alt="Portada del libro">
+    </div>
+
+    <!-- ==========================================
+         CUENTO 1: UN BUS DESCONOCIDO
+         ========================================== -->
+    <div class="page" id="p1">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO I</span></div>
+        
+        <h2 class="chapter-title">Un bus desconocido</h2>
+        <div class="author-meta">Por: Santiago Pazmiño</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">Como ya era costumbre, me encontraba retrasado para el trabajo. Mi bicicleta me había fallado con una llanta ponchada, obligándome a buscar transporte público de inmediato. La angustia me carcomía; una tercera falta sería imperdonable, así que corrí hacia la parada con la desesperación de un maratonista hasta que divisé un bus aguardando pasajeros. Sin siquiera fijarme en la ruta, subí con la única urgencia de que el vehículo me sacara pronto del campo.</p>
+            <p>Al entrar, me sorprendió un silencio sepulcral; la unidad estaba vacía y la atmósfera se percibía extrañamente tensa. Sin embargo, resté importancia a esa inquietante sensación con tal de llegar a tiempo y me desplomé en un asiento, intentando recuperar el aliento.</p>
+            <p>El tiempo transcurría de forma anómala. Lo que habitualmente era un trayecto de veinte minutos desde la periferia hasta la ciudad, se había extendido por casi una hora sin señales de nuestro destino. Inquieto, consulté la ubicación en mi celular, pero la pantalla no mostraba un mapa, sino un mensaje críptico que me heló la sangre: "Sal de aquí. Esta no es tu realidad".</p>
+            <p>Desconcertado y asumiendo que mi teléfono fallaba, caminé hacia la cabina para hablar con el conductor. Fue entonces cuando el pánico se apoderó de mí: no había nadie al volante; el vehículo avanzaba por cuenta propia. La desesperación me impulsó a intentar abrir las puertas, pero la velocidad era tan increíble que saltar habría sido un suicidio. Entendí que mi única salvación era frenar aquel monstruo metálico por mi cuenta.</p>
+            <p>Aunque jamás había conducido un autobús, la adrenalina me obligó a improvisar. Tras un par de minutos de maniobras inciertas, logré descifrar el mecanismo de los frenos y detuve el bus de golpe en medio de un paraje desconocido.</p>
+            <p>Ignorando el terror, me apresuré a salir. Pero, al dar el primer paso hacia el exterior, sentí un impacto seco en mi frente y el mundo se desvaneció. Había estado dormido todo el tiempo y acababa de golpearme contra mi mesa de noche.</p>
+            <p>Aturdido, me pregunté cómo algo tan vívido pudo ser solo un sueño; fue entonces cuando la advertencia del teléfono cobró sentido. Al mirar el reloj, la realidad me golpeó de nuevo: volvía a ser tarde para el trabajo. Me arreglé a toda prisa y salí, preguntándome si aquel sueño era simplemente una mala pasada de mi mente o una señal que no debería ignorar.</p>
+        </div>
+        <div class="page-num">PÁG. — 1</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 2: SIETE NOCHES (PÁGINA 1)
+         ========================================== -->
+    <div class="page" id="p2">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO II </span></div>
+        
+        <h2 class="chapter-title">Siete noches</h2>
+        <div class="author-meta">Por: Santiago Pazmiño</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">Aquella comenzó como una mañana cualquiera, bajo un sol incandescente y el canto rítmico de los pájaros que no presagiaba nada inusual. Me levanté con el cuerpo pesado, arrastrando la fatiga de una noche en vela dedicada a los proyectos de la universidad; la vida independiente resultó ser mucho más agotadora de lo que imaginaba, y mi apartamento, sumido en un caos absoluto, era la prueba de ello. Sin tiempo para ordenar, tomé mi mochila y salí disparado hacia mis prácticas.</p>
+            <p>Al llegar al instituto, el ambiente era el de siempre: compañeros rezagados y la perspectiva de soportar dos horas de un profesor cuyo tono monótono hacía que sus explicaciones fueran casi indescifrables. Tras la clase, acompañé a mi mejor amigo a sus sesiones de recuperación; era una semana tediosa de merodear por salones vacíos esperando a que terminara la jornada.</p>
+            <p>Fue a la salida cuando todo cambió. Mientras caminábamos, noté un movimiento hostil entre los arbustos: un grupo de tipos acosaba a una chica hasta las lágrimas. Aunque mi amigo, preso del miedo, quiso huir, yo no podía quedarme de brazos cruzados. Sin saber pelear, pero apelando a la astucia, me oculté y grité «¡Bombaaa!» con todas mis fuerzas. El pánico surtió efecto y los agresores se dispersaron como sombras. Al acercarme a ella, sentí un vuelco en el corazón; era un ser divino, de piel de porcelana, cabellera azabache y ojos oscuros como el carbón pulido. A pesar de mi vergüenza por el grito que incluso hizo huir a mi propio amigo, ella me dedicó una sonrisa que me dejó rendido a sus pies.</p>
+            <p>Intercambiamos contactos y, con el paso de los meses, la conexión se volvió inquebrantable. Vivimos momentos de una felicidad absoluta: viajes, locuras compartidas y una promesa de lealtad que parecía eterna, incluso cuando ella tuvo que salir del país por estudios. Aguardé su regreso con devoción, y al acercarse nuestro primer aniversario, ella me anunció que volvía. Decidí darle una sorpresa en su apartamento, usando las llaves que me había confiado.</p>
+            <p>La noche del encuentro era gélida y un diluvio amenazaba con desatarse. Al llegar a su puerta, la cerradura se resistió de forma extraña; en un arrebato de desesperación, la derribé de una patada. Al entrar, el aire se sentía denso y viciado. En la habitación, el mundo se desmoronó ante mis ojos: ella no estaba sola. Me quedé petrificado, conteniendo las lágrimas mientras la miraba con incredulidad. Lo más doloroso no fue solo la traición, sino reconocer al hombre que la acompañaba: era el mismo sujeto del que la había defendido tiempo atrás.</p>
+            <p>Salí de allí bajo un aguacero torrencial, con el alma desgarrada. Ignoré sus llamadas y me refugié en mi soledad, contemplando una luna radiante que parecía burlarse de mi desolación. Durante siete noches seguidas, le pregunté al cielo en qué había fallado, buscando respuestas en el vacío de una relación que creía perfecta. Pero la tristeza fue un peso demasiado grande para soportar.</p>
+            <p>—¿Terminó de leerlo? —preguntó una voz rompiendo el silencio. —Sí, inspector —respondió el detective, cerrando el cuaderno manchado—. Este diario es lo único que sobrevivió al incidente. —¿Están seguros? —Afirmativo. El joven murió en el acto tras precipitarse desde lo más alto del edificio. Parece que dejó escrita su historia hasta el último aliento.</p>
+        </div>
+            <div class="ornament">❦</div>
+        <div class="page-num">PÁG. — 2</div>
+    </div>
+    <!-- ==========================================
+         CUENTO 3: UN VIAJE AL PASADO (PÁGINA 1)
+         ========================================== -->
+    <div class="page" id="p4">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO III</span></div>
+        
+        <h2 class="chapter-title">Un viaje al pasado</h2>
+        <div class="author-meta">Por: David Iza</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">M</p>
+            <p>i vida siempre había sido un laberinto de silencios; desde niño, socializar me resultaba una tarea titánica, hasta que conocí a Nicol. Entre nosotros surgió una conexión inmediata e inexplicable. Ella solía compartir conmigo sus anhelos de infancia: estudiar Comercio Internacional en España al cumplir los diecinueve años. Yo, por mi parte, le confié mi sueño de ser chef y recorrer el mundo para descubrir los sabores de cada cultura; una idea que a ella siempre le pareció fascinante.</p>
+            <p>Los años de colegio se esfumaron y, antes de la graduación, sellamos una promesa de amistad eterna y comunicación constante. Tras el instituto, nuestros caminos se bifurcaron temporalmente: ella se preparaba en Quito mientras yo estudiaba en Cuenca, aguardando ambos nuestra oportunidad de partir al extranjero.</p>
+            <p>Finalmente, el destino me abrió las puertas de Francia. El día de mi partida, rodeado del afecto de mi familia, subí al avión con una mezcla de emoción y melancolía, preguntándome si el destino volvería a cruzar mi camino con el de Nicol, quien ya se encontraba en España. Al llegar a Francia, quedé maravillado por la magnitud de su arquitectura y la riqueza de su gastronomía. Los primeros seis meses fueron una inmersión total en la repostería (crepes, tarte tatin, croissants y macarons), seguidos de otros seis meses dedicados a la cocina tradicional.</p>
+            <p>Mi periplo continuó por México, Portugal e Inglaterra. Cada país me otorgaba un nuevo conocimiento, pero también profundizaba un vacío en mi pecho. Extrañaba a mi familia y, tras cuatro años de ausencia, la soledad empezaba a pesar. Fue entonces cuando recibí una llamada inesperada. Era Nicol. Su voz me devolvió la calidez de casa mientras me invitaba a su graduación en España. Me encontraba ante una encrucijada: elegir Estados Unidos para continuar mis estudios o viajar a España para reencontrarme con la mujer que, en silencio, siempre había amado. Elegí España. No podía faltar al momento más importante de la persona que nunca me abandonó en mi juventud.</p>
+            <p>Nos reencontramos un sábado en Madrid a las doce de la tarde. Al verla, quedé asombrado: ya no era la chica del colegio, sino una mujer renovada y exitosa. Caminamos por la ciudad mientras ella me guiaba por sus rincones favoritos, hasta que la noche nos llevó a mi departamento. Decidí cocinar para ella un plato típico ecuatoriano, un homenaje a nuestras raíces y a todo lo que habíamos superado. Entre risas, vino y recuerdos, la atmósfera se volvió íntima. Bajo el efecto del alcohol y la nostalgia, ella confesó que me había extrañado cada día y que su amor por mí nunca se había extinguido. Sorprendido y conmovido, la besé, sellando un pacto que el tiempo no pudo romper. Semanas después, tras días de intenso estudio y mensajes constantes, llegó el día de su graduación. Estuve allí, a su lado, ayudándola y celebrando que ambos, a pesar de la distancia y los años, habíamos cumplido nuestros sueños.</p>
+            <div class="ornament">❈</div>
+        </div>
+        <div class="page-num">PÁG. — 4</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 4: UN ENCUENTRO SOBRENATURAL
+         ========================================== -->
+    <div class="page" id="p6">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO IV</span></div>
+        
+        <h2 class="chapter-title">Un encuentro sobrenatural</h2>
+        <div class="author-meta">Por: David Iza</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>ran la una de la mañana de una noche gélida cuando me encontré, cara a cara, con una presencia que jamás imaginé conocer. Aquel instante marcaría un antes y un después en mi vida, pero para comprender la magnitud de ese encuentro, debo retroceder dos días en el tiempo, específicamente al 17 de agosto.</p>
+            <p>Todo comenzó un domingo por la mañana. Me alistaba para asistir a la iglesia con mi familia, aunque mi espíritu estaba cargado; me sentía emocionalmente agotado tras una semana difícil que me había dejado sin fuerzas. Al finalizar el culto, mis amigos me recordaron el retiro que comenzaría al día siguiente. Aunque el cansancio me pesaba, acepté ir. Esa noche, bajo las instrucciones de mis padres, mi hermana y yo preparamos nuestras mochilas con la expectativa de lo que vendría.</p>
+            <p>El lunes, tras una mañana de tensa espera en casa, llegamos al punto de encuentro donde el bus nos recogería. Allí estaban mis amigos, pero también los líderes, quienes impusieron una regla que me resultó difícil de digerir: prohibido el uso de teléfonos celulares. Intenté ocultar el mío, aferrándome a esa pequeña conexión con el mundo exterior, pero mis planes se desmoronaron cuando mi madre descubrió mi intención y me obligó a entregárselo. Con una mezcla de resignación y curiosidad, subí al bus y compartí el trayecto charlando con un amigo hasta llegar a nuestro destino.</p>
+            <p>El lugar era de una belleza serena, un refugio perfecto lejos del caos. Tras la asignación de habitaciones donde tuve la suerte de compartir cuarto con mi amigo Diego y un breve descanso, comenzaron las actividades académicas y espirituales. La jornada avanzó entre clases y una cena de bienvenida donde, vestidos de forma formal, compartimos un banquete en un salón imponente. La noche se volvió aún más fría. Durante un breve receso, busqué un poco de agua caliente para combatir el clima antes de entrar a la última sesión del día. El tema central era la identidad. Los líderes nos propusieron un ejercicio sencillo en apariencia, pero devastador para mi estado mental: mirarnos a un espejo y describir lo que veíamos. En aquel entonces, mi autoestima estaba por los suelos, y mi respuestas fueron un reflejo de esa negatividad interna.</p>
+            <p>Sin embargo, en medio de esa oscuridad emocional, ocurrió algo inexplicable. Mientras me observaba, ese vacío que me había atormentado comenzó a llenarse de una manera extraordinaria y profunda. Sentí una plenitud que no podía explicar con palabras; fue apenas el primer atisbo de lo que estaba por suceder en aquel encuentro que cambiaría mi realidad para siempre.</p>
+        </div>
+        <div class="page-num">PÁG. — 6</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 5: UN PLAN CASI PERFECTO (PARTE 1)
+         ========================================== -->
+    <div class="page" id="p7">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO V</span></div>
+        
+        <h2 class="chapter-title">Un plan casi perfecto</h2>
+        <div class="author-meta">Por: Lizbeth Tagua</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">U</p>
+            <p>na gélida noche de diciembre, la fina lluvia comenzó a humedecer su rostro. Al sentir la leve brisa sobre su piel, lo invadió una sensación extraña; un contraste total tras los eventos recientes. Una semana antes, en una sala de interrogatorios:</p>
+            <p>—Durante días, una idea me atormentaba los pensamientos; no sé de dónde surgió —suspiró, agotado de relatar la historia por tercera vez—. Jamás me había sucedido algo igual. Era un impulso que rayaba en lo psicópata, pero, inicialmente, no me atrevía a ejecutarlo. Después de todo, carecía de una lógica aparente... o al menos eso es lo que ustedes creen.</p>
+            <p>El narrador continuó explicando que los demás ignoraban la magnitud de su traición y cómo ella había revelado la verdad de lo ocurrido. Según su relato, su plan original era perfecto, pero ella lo arruinó al posicionarse como la víctima y dejarlo a él como el villano; por ello, la venganza se volvió un imperativo.</p>
+            <p>Aquella tarde, puso en marcha su estrategia. Su objetivo era simular un suicidio, una tarea que parecía sencilla pero que requería una precisión absoluta, pues cualquier descuido revelaría la verdad. Tras analizar meticulosamente cada entrada y salida de la casa, se aproximó al lugar. Sabía que ella solía dejar la puerta trasera abierta por la tarde, y debía aprovechar esa breve ventana de tiempo antes de que cerrara todo para pasar la noche.</p>
+            <p>Tal como lo imaginó, la puerta estaba sin seguro. Logró entrar y ocultarse fácilmente en el dormitorio de invitados, situado al final del pasillo, donde esperó pacientemente mientras ella le daba la espalda.</p>
+            <p>—Me estaba impacientando —confesó ante los detectives—. Me agazapé en un rincón junto a la cama, un punto ciego a pesar de que la puerta estaba abierta. Solo era cuestión de esperar unos minutos más.</p>
+            <p>Sin embargo, un error alteró el curso de los hechos. En un movimiento descuidado, se golpeó la cabeza con la lámpara del dormitorio, perdiendo el factor sorpresa. Ella lo descubrió de inmediato y, armada con un cuchillo, se abalanzó sobre él. Comenzaron a forcejear violentamente; el dolor en la cabeza era punzante, pero él sabía que si cedía, moriría. En medio de la lucha, ella cayó al suelo y soltó el arma blanca, que salió disparada hacia un rincón. Parecía ser el final para ella.</p>
+            <p>En ese momento de desesperación, el plan original se desvaneció: solo quedaba el deseo de terminar con todo. Sacó una pistola de su bolsillo y apuntó directamente a la cabeza de la mujer. Ella dejó de resistirse, consciente de que no tenía escapatoria. No obstante, el dolor del golpe anterior se intensificó súmitamente, provocando que él soltara el arma. Ella aprovechó el instante, se liberó de su agarre y lo encañonó. Incapaz de moverse y sin fuerzas, él solo pudo observar cómo ella lo amenazaba, obligándolo a abandonar la casa.</p>
+
+        </div>
+        <div class="page-num">PÁG. — 7</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 5: UN PLAN CASI PERFECTO (PARTE 2)
+         ========================================== -->
+    <div class="page" id="p8">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO V (PÁG. 2)</span></div>
+
+        <div class="text-body">
+            <p>—Mi plan había fallado por completo —concluyó en el interrogatorio—. O eso pensaba, hasta que su cadáver apareció al día siguiente en su habitación.</p>
+            <p>Tras el relato, los detectives intercambiaron susurros y abandonaron la sala. Él permaneció inmóvil por un momento hasta que le permitieron irse. Las cámaras de vigilancia habían confirmado su salida de la casa y que nunca volvió a entrar, por lo que no había motivos legales para retenerlo.</p>
+            <p>Al cruzar el umbral de la comisaría, una leve sonrisa se dibujó en su rostro. Sabía que, después de todo, su plan había funcionado: un poco de edición en las grabaciones había bastado para eliminar cualquier prueba incriminatoria. Había logrado su cometido y, ahora, ya no había forma de acusarlo.</p>
+            <div class="ornament">❦</div>
+        </div>
+        <div class="page-num">PÁG. — 8</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 6: UN CUENTO POCO COMÚN
+         ========================================== -->
+    <div class="page" id="p9">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO VI</span></div>
+        
+        <h2 class="chapter-title">Un cuento poco común</h2>
+        <div class="author-meta">Por: Lizbeth Tagua</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>xisten innumerables relatos, pero la mayoría sigue el mismo patrón: una princesa rescatada por un gallardo príncipe, una boda de ensueño y un "felices para siempre". Nos crían con estas fantasías, haciéndonos creer que estamos destinados a encontrar un alma gemela para vivir un idilio perpetuo. Sin embargo, cada historia tiene otra cara. ¿Alguna vez se han preguntado cómo vive esa realidad el protagonista masculino? O, en mi caso, un simple guerrero.</p>
+            <p>Hace años, prestaba mis servicios en el castillo de la princesa Celestia. No era la vida que habría elegido por voluntad propia, pero las deudas de mi familia me obligaron a aceptar el puesto; no tenía otra opción. Cuando los rumores de guerra comenzaron a cobrar fuerza, el entrenamiento se volvió extenuante. Sabíamos que el reino vecino planeaba un ataque, así que trazamos planes minuciosos para cada contingencia. Mi deber, como el guerrero más antiguo, era claro: debía proteger a la princesa a toda costa, incluso si eso significaba dar mi vida por ella.</p>
+            <p>El ataque llegó días después. El estrépito de las espadas resonaba por doquier y, aunque inicialmente teníamos ventaja, un segundo embate nos tomó desprevenidos y debilitados. La princesa fue puesta a salvo en la torre más alta, pues era el objetivo principal del enemigo. Luché hasta el límite de mis fuerzas y, justo cuando los invasores estaban por alcanzarla, logré abrirme paso para defenderla. Tras una batalla encarnizada, logramos vencerlos. Aquel día me convertí en el héroe del reino y el rey, en gratitud, me nombró líder de los guerreros.</p>
+            <p>Con el tiempo, mi cercanía con la princesa creció, aunque yo nunca descuidé mi rol como líder ni mis entrenamientos; no podíamos permitir que la historia se repitiera. Sin embargo, la atmósfera cambió: ella se volvió distante y sentí la mirada escrutadora del rey sobre mí en todo momento. Los rumores no tardaron en aparecer y, aunque intenté ignorar las habladurías, la verdad me golpeó en una reunión privada con el monarca.</p>
+            <p>La princesa se había enamorado de mí y estaba dispuesta a renunciar a su estatus real con tal de casarse conmigo. El rey, desesperado por no perder a su hija, aceptó la unión, pero yo no estaba de acuerdo. Jamás la vi con otros ojos; para mí, ella era mi trabajo y mi responsabilidad. Aunque mis deudas ya estaban saldadas, no deseaba abandonar el castillo ni mucho menos casarme. No obstante, me encontraba entre la espada y la pared: mi familia fue amenazada y no tuve más opción que ceder si quería volver a verlos.</p>
+            <p>La noticia se difundió por el pueblo en un abrir y cerrar de ojos; los preparativos se hicieron a contrarreloj y esa misma tarde se celebró la boda. No había entusiasmo en mi corazón; aquello no era lo que quería para mi vida. Ante el reino, aparentábamos ser la pareja perfecta, pero tras las puertas cerradas, la convivencia era una auténtica tortura. Me resultaba imposible verla como mi esposa, y esa se convirtió en mi mayor condena. Desde aquel día, mi existencia quedó reducida a una mentira llena de apariencias, con la incertidumbre de si el tiempo me hará amarla o si terminaré perdiéndolo todo.</p>
+        </div>
+        <div class="ornament">❦</div>
+        <div class="page-num">PÁG. — 9</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 7: EL AUTO QUE REVIVIÓ PARA RUGIR
+         ========================================== -->
+    <div class="page" id="p10">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO VII</span></div>
+        
+        <h2 class="chapter-title">El auto que revivió para rugir una vez más</h2>
+        <div class="author-meta">Por: Maykel Bonilla</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">H</p>
+            <p>abía una vez un hombre que, al caminar por la calle, se detuvo frente a lo que otros verían como simple chatarra. Sin embargo, él no vio un montón de escombros, sino un nuevo camino que se abría en su vida y las increíbles aventuras que le esperaban con ese vehículo.</p>
+            <p>Llamó a una grúa para trasladarlo al taller de su hermano Freddy, donde comenzaron la ardua tarea de devolverle la vida a aquel Ford Mustang de 1967. Lo que al principio parecía un montón de metal oxidado, pronto empezó a transformarse en una leyenda renacida, lista para rugir nuevamente en las calles.</p>
+            <p>Una vez terminado, Nicolás llevó el coche a su máximo potencial. Al principio, el vehículo respondía con fuerza, pero en una curva cerrada, mientras realizaba un espectacular derrape, algo salió mal: el sistema de frenos se averió. Nicolás, lejos de amedrentarse, aceleró hasta alcanzar los 180 kilómetros por hora, perdiendo el juicio por la velocidad.</p>
+            <p>Lamentablemente, al intentar frenar, el volante falló y el desenlace fue trágico: Nicolás perdió la vida en el acto. Su recuerdo y la audacia que demostró al volante quedaron grabados para siempre en esa calle.</p>
+            <div class="ornament">❈</div>
+        </div>
+        <div class="page-num">PÁG. — 10</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 8: EL SILENCIOSO CENTINELA DE CONCRETO
+         ========================================== -->
+    <div class="page" id="p11">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO VIII</span></div>
+        
+        <h2 class="chapter-title">El silencioso centinela de concreto</h2>
+        <div class="author-meta">Por: Maykel Bonilla</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">H</p>
+            <p>abía una vez un puente que pasaba sus días observando en silencio a los autos que transitaban bajo su estructura. Con el paso del tiempo, las varillas de hierro de su armazón empezaron a asomarse y las grietas comenzaron a surcar su superficie; aquel deterioro le causaba un profundo pesar.</p>
+            <p>Un día, un camión cargado de troncos avanzaba tranquilamente, pero el conductor no se percató de que la lluvia estaba empezando a caer. Debido al mal estado de los neumáticos, el vehículo perdió el control justo al entrar en el puente, impactando violentamente contra su lado izquierdo. El puente, debilitado por los años, sintió que ya no podía resistir más y, con un último pensamiento de resignación ante su vieja vida, se dejó derrumbar.</p>
+            <p>A medida que los trozos de concreto caían, el puente experimentaba un dolor agónico, como si le arrancaran la piel. En cuestión de minutos, la estructura se había desplomado por completo. La policía llegó al lugar y solicitó la intervención de albañiles públicos para construir un nuevo puente, pero ninguno de ellos conocía el terrible sufrimiento que el viejo centinela había soportado ni el gran legado que dejaba tras de sí.</p>
+            <div class="ornament">✥</div>
+        </div>
+        <div class="page-num">PÁG. — 11</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 9: UNA SANACIÓN PURA
+         ========================================== -->
+    <div class="page" id="p12">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO IX</span></div>
+        
+        <h2 class="chapter-title">Una sanación pura</h2>
+        <div class="author-meta">Por: Yandel Pachacama</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>sta es la historia de un joven que creció bajo la constante sombra de la desaprobación, en el seno de una familia donde siempre se le señalaba como el responsable de cualquier error. Esa carga de culpa se arraigó profundamente en su mente mientras crecía, marcando su percepción de sí mismo desde muy temprana edad.</p>
+            <p>Al cumplir los doce años, el joven experimentó el primer amor. Debido a su inseguridad emocional, tras apenas un mes de relación, se aferró a aquella chica con una intensidad desesperada. Aunque al tercer mes todo parecía marchar bien, el peso de sus conflictos internos y el caos de sus pensamientos se volvieron insoportables; finalmente, al cumplirse los seis meses, la relación llegó a su fin.</p>
+            <p>Incapaz de gestionar el dolor de la ruptura tras haberse entregado de esa manera, el joven comenzó a lastimarse físicamente, mientras reprimía todo lo que sentía en lo más profundo de su psique. Durante los tres años siguientes, persistió en la búsqueda de una nueva pareja con la esperanza de llenar su vacío emocional, hasta que llegó un punto de agotamiento mental en el que decidió que no podía continuar así.</p>
+            <p>En aquel tiempo, asistía a clases de catecismo, aunque inicialmente lo consideraba simplemente un pasatiempo. Sin embargo, tras realizar su confirmación, se integró en un grupo parroquial llamado JMV, un espacio donde por fin sintió que encajaba y donde encontró el consuelo que tanto buscaba.</p>
+            <p>Con el paso de los días, comprendió que su verdadera estabilidad no dependía de otra persona, sino de su cercanía con la fe. Logró recuperar la felicidad, pero esta vez no fue gracias a una relación sentimental, sino a través de su amor por Dios, quien fue transformando su interior de manera constante. Hoy en día, aquel niño que cargaba con culpas ajenas ha encontrado la paz definitiva, pues ha decidido que su vida entera le pertenece a Dios.</p>
+        </div>
+        <div class="page-num">PÁG. — 12</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 10: METAS CUMPLIDAS
+         ========================================== -->
+    <div class="page" id="p13">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO X</span></div>
+        
+        <h2 class="chapter-title">Metas cumplidas</h2>
+        <div class="author-meta">Por: Yandel Pachacama</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>sta historia comenzó el 29 de febrero de 1987, cuando un niño de apenas ocho años empezó a jugar al fútbol en humildes canchas de tierra. Provenía de una familia de escasos recursos que, en ocasiones, no tenía ni siquiera para alimentarse. A pesar de ser tan pequeño, comprendía la difícil situación de los suyos y se fijó una meta ambiciosa: sacarlos de la pobreza y convertirse en el mejor futbolista del mundo.</p>
+            <p>Con una determinación inquebrantable, se levantaba de madrugada cada día para equilibrar sus entrenamientos con sus estudios, pues además de triunfar en el deporte, deseaba obtener un título profesional. Con el paso de los años, su talento creció hasta atraer la atención de los clubes más importantes. Antes de concluir su formación académica, recibió una oferta económica de más de tres millones de dólares, la cual aceptó sin dudar.</p>
+            <p>Al cumplir los diecisiete años, alcanzó lo que consideraba su mayoría de edad. En ese punto, se enfrentó a una encrucijada: dedicarse por completo a su prometedora carrera como futbolista o continuar con su formación universitaria. Gracias a la férrea disciplina que había forjado desde la infancia para ayudar a su familia, no tuvo dudas y decidió compaginar ambas pasiones. Tras dos años adicionales de esfuerzo constante, finalmente logró graduarse. De este modo, alcanzó sus mayores anhelos y transformó la realidad de su familia, logrando rescatarlos definitivamente de la pobreza.</p>
+            <p style="font-style: italic; text-align: center; margin-top: 8mm; color: #a67c52;">Ahora dime: ¿Crees que con disciplina se puede lograr cualquier objetivo?</p>
+            <div class="ornament">❦</div>
+        </div>
+        <div class="page-num">PÁG. — 13</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 11: LA CASA ROJA (PARTE 1)
+         ========================================== -->
+    <div class="page" id="p14">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XI (PÁG. 1)</span></div>
+        
+        <h2 class="chapter-title">La casa roja</h2>
+        <div class="author-meta">Por: Damaris Cando</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">J</p>
+            <p>ennie nunca creyó en lo paranormal. Para ella, las maldiciones y los seres sobrenaturales eran simples cuentos diseñados para que los niños obedecieran a sus padres. A sus quince años, se consideraba demasiado madura para dejarse engañar por tales fantasías.</p>
+            <p>Sin embargo, en su colegio los rumores eran constantes. Se hablaba de una vivienda de color rojo situada a cinco cuadras, en un barrio solitario, que cargaba con una fama siniestra. Las historias se remontaban a setenta años atrás, cuando la familia Fernández habitaba el lugar; todos desaparecieron misteriosamente tras la muerte de sus dos hijos gemelos.</p>
+            <p>Después de aquel suceso, otra familia compró la propiedad, pero los fenómenos inexplicables no tardaron en manifestarse: los objetos se movían con violencia y su mascota se negaba a entrar. Dos días después, hallaron a la perrita muerta y, aterradoramente, le habían extraído todos los órganos. Los habitantes enfermaron de gravedad hasta que, de un momento a otro, se esfumaron sin dejar rastro. Incluso los intentos por demoler la estructura fracasaron: los albañiles morían uno tras otro por enfermedades repentinas, suicidios o desapariciones.</p>
+            <p>Finalmente, las autoridades optaron por cercar la casa con cadenas y letreros de “No pasar”. Jennie había escuchado estas leyendas desde el kínder, restándoles importancia a pesar de que varios compañeros que se aventuraron allí nunca regresaron. Un día, un profesor le encargó a ella y a su mejor amiga, Karla, repartir folletos de un evento escolar en esa zona específica, ya que nadie más se atrevía a acercarse.</p>
+            <p>Al llegar frente a la casa Roja, se quedaron observándola. Para sorpresa de ambas, desde afuera el lugar parecía habitado: había una casa de perro, juguetes en el patio e incluso se divisaban siluetas de personas a través de los cristales. Desafiante, Jennifer decidió entrar.</p>
+            <p>—¡Detente! Sabes perfectamente lo que dicen de este lugar —le advirtió Karla, visiblemente angustiada. —No seas exagerada, es obvio que todo son mentiras —respondió Jennie mientras saltaba la cadena.</p>
+             <p>Karla insistió en que se marcharan, pero Jennie hizo oídos sordos. Al cruzar el umbral y mirar atrás, notó que su amiga ya no estaba; supuso que había huido por miedo. Jennie tocó la puerta y esta se abrió sola. Sin embargo, al entrar, la ilusión se desvaneció: el interior estaba en ruinas, con madera podrida, suelos hundidos y paredes agrietadas. Presa del pánico, intentó salir, pero la puerta había desaparecido. En su lugar solo había ventanas que daban a una oscuridad absoluta, donde se distinguían manos presionando contra el vidrio.</p>
+        </div>
+        <div class="page-num">PÁG. — 14</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 11: LA CASA ROJA (PARTE 2)
+         ========================================== -->
+    <div class="page" id="p15">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XI (PÁG. 2)</span></div>
+        
+        <div class="text-body">
+           
+            <p>El terror se apoderó de ella al escuchar pasos y rasguños en las paredes. Sin salida aparente, comenzó a explorar lo que parecía un laberinto infinito de habitaciones que drenaban su energía. De pronto, llegó a un cuarto que le heló la sangre: allí estaba su padre, quien había fallecido apenas tres meses antes.</p>
+            <p>Embargada por la nostalgia, Jennie lo abrazó llorando y le suplicó que la sacara de ese lugar tan extraño. —No te preocupes, cariño —respondió él con una calma inquietante—. Ahora estás a salvo conmigo. Conozco la salida.</p>
+            <p>Jennie confió ciegamente y lo siguió hasta una puerta. Pero, en cuanto la abrió, su padre la empujó hacia un vacío profundo. Lo último que vio fue que el hombre no tenía rostro; en su lugar solo había un agujero negro y denso.</p>
+            <p>Demasiado tarde, Jennie comprendió que las leyendas eran ciertas. La casa había jugado con su mente, ocultando los gritos de advertencia de Karla, quien siempre estuvo afuera. La puerta siempre había estado allí, pero la entidad que habitaba la casa la había engañado usando la imagen de su padre. Ahora, Jennie no es más que un espíritu en pena, condenada a rondar por siempre los pasillos de la casa Roja.</p>
+            <div class="ornament">❈</div>
+        </div>
+        <div class="page-num">PÁG. — 15</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 12: BAJO EL CEREZO DE OTOÑO (PARTE 1)
+         ========================================== -->
+    <div class="page" id="p16">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XII (PÁG. 1)</span></div>
+        
+        <h2 class="chapter-title">Bajo el cerezo de otoño</h2>
+        <div class="author-meta">Por: Damaris Cando</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>n una tarde cálida de otoño, mientras las hojas anaranjadas danzaban al ritmo de una melodía invisible y el cielo comenzaba a teñirse de tonos dorados, Keyla cumplía con su ritual diario de visitar el cerezo situado en el corazón del parque. En ese refugio personal, se permitía observar a las parejas que paseaban entre los bancos, dejando que su amor fluyera con libertad.</p>
+            <p>En su interior, Keyla anhelaba vivir un romance similar: una historia recíproca y dulce, tan perfecta como las que solía ver en sus series favoritas. Sin embargo, aquella tarde el destino tenía preparado un cambio. Justo cuando se disponía a marcharse, Keyla tropezó y cayó de rodillas. En un primer momento, pensó que alguien la había empujado a propósito, pero al alzar la vista se encontró con un joven de su edad, quizás de dieciséis o diecisiete años, cuyo rostro suave y rasgos juveniles emanaban una mezcla de serenidad y melancolía. Sus ojos, grandes y de color café claro, la observaban con fijeza bajo un cabello negro y ondulado que caía con natural desorden sobre su frente.</p>
+            <p>Él se encontraba semirecostado escuchando música hasta que la presencia de Keyla interrumpió su calma. Ella permanecía en el suelo, en una postura que denotaba una mezcla de timidez y desconcierto: una pierna recogida y la otra extendida, con las manos apoyadas en el asfalto como si buscara un punto de apoyo emocional. Su torso inclinado revelaba vulnerabilidad, mientras que su mirada, bajo un cabello largo de un tono rosado intenso algo despeinado por la caída, reflejaba una sorpresa absoluta.</p>
+            <p>Tras un breve silencio en el que ambos se estudiaron, el chico rompió el hielo. —Lo siento muchísimo —se disculpó él—. Debí darme cuenta de que mi posición estorbaba el paso. —No te preocupes —respondió Keyla, masajeándose la frente con suavidad—. A veces también me pasa a mí. Él dejó escapar una risa leve antes de ponerse en pie y ofrecerle la mano para ayudarla a levantarse. —Soy Izan. —Keyla —contestó ella con una sonrisa.</p>
+            <p>Aquel encuentro fue el primero de muchos. Durante los días siguientes, el parque y el viejo cerezo se convirtieron en su punto de reunión habitual, siempre a la misma hora. Compartieron charlas profundas sobre música, libros, sueños y temores; Keyla se sentía verdaderamente escuchada, e Izan disfrutaba de la sinceridad y la confianza que ella le brindaba, algo que nunca antes había experimentado con nadie más.</p>
+            <p>Un día, Izan le pidió que se encontraran un poco más temprano de lo acostumbrado. Keyla llegó puntual, pero se desconcertó al notar que él no estaba allí, a pesar de que Izan solía adelantarse. Lo esperó durante dos largas horas, pero él nunca apareció. Decepcionada y con el corazón herido, emprendió el camino de regreso a casa sintiéndose traicionada y utilizada. Estaba convencida de que ese día él formalizaría su relación y, de no hacerlo él, ella estaba decidida a dar el paso. Sin embargo, el dolor la llevó a querer borrarlo de su vida, reuniendo el coraje necesario para bloquear su número.</p>
+        </div>
+        <div class="page-num">PÁG. — 16</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 12: BAJO EL CEREZO DE OTOÑO (PARTE 2)
+         ========================================== -->
+    <div class="page" id="p17">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XII (PÁG. 2)</span></div>
+        
+
+        <div class="text-body">
+            <p>Mientras tanto, el cielo se tornaba gris, cubriéndose de nubes que presagiaban una tormenta al final de aquella tarde. Al otro lado de la calle, un teléfono sonaba sin cesar, iluminándose con múltiples mensajes que nadie respondía. A pocos metros, el tráfico se había detenido y el eco de las sirenas policiales llenaba el aire; un grupo de personas se agolpaba en el lugar, algunos intentando ayudar y otros paralizados por la conmoción. Los testigos susurraban con gravedad mientras esperaban la llegada de los servicios de emergencia.</p>
+            <p>En el asfalto, los paramédicos trabajaban con urgencia, aunque sus movimientos se volvieron pausados y solemnes al comprender la situación. Finalmente, uno de ellos se incorporó y negó con la cabeza en un gesto de resignación. La policía acordonó la zona y una manta clara cubrió el cuerpo del joven, devolviéndole un poco de dignidad en mitad del caos. La tarde, que horas antes prometía emoción, se sumió en un silencio sepulcral. En la acera opuesta, el teléfono del chico seguía encenciéndose con una notificación persistente: «¿Dónde estás? Ya estoy aquí».</p>
+            <p>Aquella cita nunca se concretó; sus planes y promesas se transformaron en un sueño inalcanzable.</p>
+            <p>El cerezo, que había sido el único testigo silencioso de aquel amor naciente, dejó de ser un refugio de belleza. Desde ese día, sus ramas dejaron de brotar y sus hojas perdieron el color, marchitándose lentamente hasta que nadie volvió a visitarlo. El árbol que una vez fue cómplice de enamorados terminó muriendo, consumido por la tristeza de una historia que no pudo ser.</p>
+            <div class="ornament">✥</div>
+        </div>
+        <div class="page-num">PÁG. — 17</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 13: MI NIÑEZ CON UNA CHISPITA DE FELICIDAD
+         ========================================== -->
+    <div class="page" id="p18">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XIII</span></div>
+        
+        <h2 class="chapter-title">Mi niñez con una chispita de felicidad</h2>
+        <div class="author-meta">Por: Lauren Atupaña</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">D</p>
+            <p>urante mi infancia, fui testigo de cómo mi padre se refugiaba en el alcohol, arrastrado por la amargura de un matrimonio sin amor. Se habían casado apenas un día después de conocerse y, según me contaba mi madre —y mis propios ojos confirmaban—, entre ellos nunca existió una caricia ni un gesto de afecto.</p>
+            <p>Mi madre solía decirme que yo era su mayor tesoro y la única razón por la que soportaba las humillaciones de mi padre. Sin embargo, en mi interior, yo dudaba de esa afirmación; cada vez que discutían, él solía descargar su frustración contra mí. Irónicamente, aprendí a preferir sus momentos de embriaguez, pues era el único estado en el que él parecía capaz de ofrecerme una pizca de cariño. De pequeña, anhelaba una conexión real, pero para él yo era invisible; jamás recibí un "hola" o un "¿cómo estás?" de su parte estando sobrio. Solo cuando bebía, me dedicaba palabras dulces y me decía "te quiero" con tanta ternura que llegué a creer que el afecto solo era posible bajo el influjo de una sustancia.</p>
+            <p>Por el contrario, mi madre siempre fue mi todo: mi amiga, cómplice y hermana; nunca me dejó sola. Por eso, cuando descubrió que mi padre tenía otra familia, el golpe fue devastador y se hundió rápidamente en una profunda depresión. Se mantenía encerrada en su habitación, alejada de mí; yo era demasiado pequeña para comprender la magnitud de su tristeza y solo alcanzaba a entender que estaba enferma.</p>
+            <p>Sus familiares, que vivían en otra provincia, notaron su deterioro y decidieron intervenir. Tras hablar con ella, mis tíos concluyeron que lo mejor era que regresara a casa de su madre. Un día, sin previo aviso, llegaron y se la llevaron; a mi padre, sumido en su propia indiferencia, no le importó en absoluto que se marchara.</p>
+            <p>Pasaron cuatro meses de absoluto silencio, sin un solo mensaje, y llegué a pensar que nunca la volvería a ver. Pero un día, al salir del colegio, la vi allí fuera esperándome. Estaba irreconocible: lucía radiante, con el cabello largo, las uñas pintadas y el rostro maquillado. Me estrechó en un fuerte abrazo mientras me susurraba cuánto me había echado de menos. De camino a casa, me preguntó por mi padre y le conté que algo había cambiado drásticamente: había dejado el alcohol y ahora se dedicaba por completo a su trabajo y a mí. Al llegar, nos encontramos con él, quien aún ignoraba que ella había regresado. Al verla, la abrazó con fuerza y le rogó que lo perdonara. Ella, con su voz siempre dulce, le respondió que ya lo había perdonado. Mi padre, sorprendido y conmovido, le confesó lo feliz que lo hacía su presencia. En ese instante, me sentí la niña más dichosa de la tierra al ver, por primera vez, a mis padres amándose con la intensidad de unos adolescentes enamorados.</p>
+        </div>
+        <div class="page-num">PÁG. — 18</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 14: UN CALIPSO EN MI VIDA (PARTE 1)
+         ========================================== -->
+    <div class="page" id="p19">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XIV</span></div>
+        
+        <h2 class="chapter-title">Un Calipso en mi vida</h2>
+        <div class="author-meta">Por: Lauren Atupaña</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">D</p>
+            <p>icen que Calipso, el personaje de la película Piratas del Caribe, fue una mujer que entregó su corazón a un hombre; mi historia es similar, aunque ocurrió en el sentido opuesto. Todo comenzó cuando conocí a un joven que, a primera vista, parecía encarnar al hombre ideal: tranquilo, estudioso, simpático y atento. A medida que lo trataba, la confianza entre nosotros creció de tal manera que llegamos a compartirlo absolutamente todo.</p>
+            <p>El día que me pidió ser su novia se grabó en mi memoria como uno de los más hermosos; nos vimos apenas un día después de mi cumpleaños y tuve la oportunidad de conocer a su madre desde el primer momento. Pasamos la tarde entera conversando sobre temas trascendentales y trivialidades, sintiendo una conexión profunda al descubrir que coincidíamos en gustos de comida, ropa, colores e incluso en nuestra visión del futuro. Regresó a casa saltando de felicidad.</p>
+            <p>Al llegar, le conté a mi madre cada detalle de lo sucedido. Como ella ya sabía de su existencia, me escuchó con atención, pero al terminar me lanzó una advertencia cargada de preocupación: me pidió que no me enamorara, recordándome que aún no tenía la edad suficiente para dimensionar ciertas situaciones y que uno nunca termina de conocer realmente a las personas. Con la confianza propia de la juventud, le respondí que, aunque era consciente de mi edad, quería permitirme vivir ese sentimiento.</p>
+            <p>Sin embargo, la advertencia de mi madre cobró sentido apenas dos meses después, cuando descubrió su primera traición. En mi inocencia, realmente creí que me amaba, pero su engaño me demostró que sus sentimientos no eran más que palabras vacías. Aquel día, mi madre me consoló y me pidió que no volviera con él. Aunque estuve de acuerdo en ese momento, él regresó rogando y me buscó con un ramo de rosas tan bellas que me conmovieron hasta las lágrimas. Me juró por su propia madre que no volvería a fallarme, asegurando que me amaba demasiado para dejarme ir, y yo decidí perdonarlo.</p>
+            <p>Lo que siguió fueron once meses de un declive doloroso. Mi salud se deterioró gravemente: dejé de comer, no podía dormir y descuidé por completo mi apariencia física. Durante ese tiempo, el chico que decía amarme me fallaba constantemente, ya fuera cada mes o cada semana, siempre que buscaba "divertirse" con alguien más. A pesar de todo, mi dependencia emocional era tan fuerte que siempre terminaba regresando con él, convencida de que era el único hombre al que podría amar.</p>
+            <p>Al ver mi estado, mi madre me llevó al médico, donde el diagnóstico fue alarmante: tenía anemia de nivel 2 y me advirtieron que, de no empezar a alimentarme, las consecuencias podrían derivar en una leucemia fatal. Esa noche, confrontada con la gravedad de mi situación, me prometí no volver a caer en el mismo ciclo. El punto final llegó esa misma madrugada, a las tres de la mañana, cuando descubrí cómo él hablaba mal de mí ante una de las chicas a las que llamaba sus "pasatiempos". En ese instante, con una claridad que no había tenido antes, lo bloqueé de todas sus redes y le deseé, sinceramente, toda la felicidad del mundo, cerrando por fin ese capítulo de mi vida.</p>
+            <div class="ornament">❦</div>
+        </div>
+        <div class="page-num">PÁG. — 19</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 15: LA ESTRELLA QUE TENÍA MIEDO DE BRILLAR
+         ========================================== -->
+    <div class="page" id="p21">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XV</span></div>
+        
+        <h2 class="chapter-title">La estrella que tenía miedo de brillar</h2>
+        <div class="author-meta">Por: Sofía Aguilar</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">H</p>
+            <p>abía una vez una pequeña estrella llamada Ian que habitaba en la inmensidad del firmamento junto a miles de compañeras. Mientras todas las demás irradiaban una luz potente y vibrante, Ian se mantenía apagada, sumida en la penumbra. El miedo la atenazaba constantemente; vivía con el temor de que su resplandor no fuera suficiente y de convertirse en el blanco de las burlas de las otras estrellas.</p>
+            <p>Noche tras noche, Ian observaba con melancolía cómo sus compañeras iluminaban la oscuridad, regalando momentos de felicidad a las personas en la Tierra. Aunque en su corazón deseaba participar en aquel espectáculo celestial, el miedo la paralizaba y la llevaba a sobrepensar cada uno de sus movimientos. Al notar su angustia, la Luna se acercó a ella y le brindó un sabio consejo: «No necesitas brillar como las demás, solo necesitas ser tú misma».</p>
+            <p>Motivada por aquellas palabras, Ian decidió finalmente intentarlo. Al comienzo, su luz era apenas un destello tenue y vacilante, pero poco a poco comenzó a cobrar más y más fuerza hasta alcanzar una intensidad asombrosa. Para su sorpresa, una niña que miraba al cielo desde la Tierra la divisó y, cautivada por su luz, pidió un deseo.</p>
+            <p>A partir de esa noche, Ian comprendió una lección fundamental: lo que realmente importa no es la potencia con la que brilles, sino tener la valentía de mostrar tu luz al mundo. Y así, la pequeña estrella nunca más volvió a esconder su resplandor.</p>
+            <div class="ornament">❈</div>
+        </div>
+        <div class="page-num">PÁG. — 21</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 16: LA FLOR QUE QUERÍA SER DIFERENTE
+         ========================================== -->
+    <div class="page" id="p22">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XVI</span></div>
+        
+        <h2 class="chapter-title">La flor que quería ser diferente</h2>
+        <div class="author-meta">Por: Sofía Aguilar</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>n un jardín vibrante, rodeada de flores de pétalos rojos, amarillos y rosados, vivía una pequeña flor blanca llamada Alma. Se sentía profundamente diferente a las demás; le preocupaba que nadie notara su presencia, convencida de que su tono blanco era demasiado tenue y carecía del atractivo de los colores llamativos.</p>
+            <p>Un día, impulsada por el deseo de cambiar, Alma le suplicó al viento que la ayudara a transformar su color. El viento sopló una y otra vez, aumentando su fuerza en cada intento, pero nada ocurrió. Al verse igual, Alma se sumió en la tristeza y la desilusión, llegando a creer que nunca sería especial y que nadie podría valorarla o amarla por ser como era. Sin embargo, su percepción cambió cuando una abeja se acercó al jardín y, entre todas las flores disponibles, eligió a Alma. «Tu aroma es el más dulce de todo el jardín», le dijo el insecto.</p>
+            <p>A partir de ese momento, más insectos y personas comenzaron a acercarse a ella, atraídos por su fragancia única.</p>
+            <p>Gracias a este encuentro, Alma comprendió que no necesitaba cambiar para ser importante. Descubrió que su verdadera belleza residía en aquello que la hacía única. Desde entonces, dejó de compararse con las demás flores y comenzó a sentirse plenamente orgullosa de su propia identidad.</p>
+            <div class="ornament">❦</div>
+        </div>
+        <div class="page-num">PÁG. — 22</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 17: EL HOMBRE QUE VIO A DIOS
+         ========================================== -->
+    <div class="page" id="p23">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XVII</span></div>
+        
+        <h2 class="chapter-title">El hombre que vio a Dios</h2>
+        <div class="author-meta">Por: Andrés Andrango</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">B</p>
+            <p>ajo el manto de una noche cualquiera, Lionel se encontraba en su huerta, entregado a la labor de la tierra. Proveniente de una familia de raíces humildes, su vida era un constante sacrificio por el bienestar de sus padres; especialmente ahora que la enfermedad de su madre exigía recursos que apenas lograban reunir con su duro trabajo de cultivo. Aquella velada, Lionel debía completar un pedido de veinte manzanas. Con la cosecha exacta en sus manos, salió de casa para realizar la entrega, sin imaginar que el destino le tendería una emboscada en el camino.</p>
+            <p>De repente, un vehículo frenó en seco y tres hombres lo forzaron a subir, privándolo de la libertad y cubriéndole el rostro para sumergirlo en la incertidumbre. Cuando finalmente le permitieron ver, Lionel se halló en la absoluta soledad de un desierto vasto y vacío. El miedo lo invadió, pero comenzó a caminar sin rumbo fijo por la arena. Transcurrieron diez días agónicos en los que la esperanza de regresar a casa parecía desvanecerse, hasta que una noche, una luz incandescente emergió de la nada frente a él. Sobresaltado y confundido, Lionel escuchó una voz que emanaba de aquella claridad: “No pierdas la esperanza, sigue caminando hacia el frente y no te detengas”.</p>
+            <p>Inspirado por el encuentro, Lionel obedeció. Tras recorrer casi cinco kilómetros, divisó una gasolinera y sintió que el milagro de volver a casa estaba cerca. Corrió con el último aliento de energía que le quedaba, solo para derrumbarse al descubrir que el lugar estaba en ruinas y abandonado. Entre lágrimas de frustración, llegó a pensar que la luz lo había engañado; sin embargo, tras un momento de reflexión, comprendió que aquel no era el destino final y decidió seguir adelante.</p>
+            <p>Más tarde, divisó a una pareja y corrió hacia ellos implorando auxilio. No obstante, la barrera del idioma sembró el miedo en los extraños, quienes huyeron despavoridos. Lionel, consumido por la amargura y la debilidad, los maldijo mientras sentía que sus fuerzas se agotaban definitivamente. Justo cuando creía que moriría allí mismo, la luz se manifestó por segunda vez con un mensaje de aliento: “No pierdas la fe, te falta poco”.</p>
+            <p>Esa promesa le dio el impulso necesario para levantarse y continuar hasta que, finalmente, las calles conocidas de su pueblo aparecieron ante él. Con el corazón acelerado, corrió hacia su hogar, donde fue recibido por el llanto y la emoción de sus padres, quienes ya lo daban por muerto. Lionel les relató su odisea y la ayuda de la luz misteriosa; en respuesta, ellos compartieron una antigua historia de su infancia sobre un hombre perdido en el desierto a quien Dios se le apareció para guiarlo a salvo.</p>
+            <p>Desde aquel día, Lionel juró mantener una fe inquebrantable, convencido de que con la guía divina todo era posible. Aunque retomó su rutina, algo en su interior se había transformado para siempre. Ya no caminaba con la mirada baja ni temía al futuro; ahora cada paso lo daba con una certeza renovada. Dios lo había conducido a salvo en tres ocasiones, pero lo que Lionel aún no alcanzaba a vislumbrar era que su travesía en el desierto había sido solo el comienzo de su verdadera historia.</p>
+        </div>
+        <div class="page-num">PÁG. — 23</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 18: EL LÁPIZ QUE DIBUJA REALIDAD (PARTE 1)
+         ========================================== -->
+    <div class="page" id="p24">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XVIII (PÁG. 1)</span></div>
+        
+        <h2 class="chapter-title">El lápiz que dibujaba realidad</h2>
+        <div class="author-meta">Por: Andrés Andrango</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">H</p>
+            <p>abía una vez un niño llamado Juanito, quien, mientras paseaba por la orilla de la playa, divisó un objeto semioculto entre los granos de arena. Impulsado por la curiosidad, se apresuró a desenterrarlo poco a poco hasta revelar un antiguo cofre. "Ojalá contenga grandes tesoros", pensó con ilusión; sin embargo, al abrir la pesada tapa, solo encontró un lápiz y un cuaderno desgastado. Aunque la decepción lo invadió inicialmente, notó que el lápiz llevaba grabada una inscripción enigmática: “Escribe lo que imaginas, pero vive lo que decides”. Sin comprender del todo el significado de aquellas palabras, decidió llevarse ambos objetos a casa.</p>
+            <p>Una vez en su habitación, la curiosidad pudo más que él y se dispuso a dibujar un helado en las páginas del cuaderno. Al terminar el trazo y cerrar el libro, ocurrió lo imposible: un helado real apareció de la nada justo detrás del cuaderno. Fue en ese instante cuando Juanito comprendió el verdadero poder del obsequio que había encontrado. Entusiasmado, continuó dibujando golosinas, hasta que una idea audaz e impulsiva cruzó su mente: dar vida a un ser mitológico. Inspirado por un póster que colgaba en su pared, comenzó a dibujar un imponente dragón, sin medir las consecuencias de sus actos.</p>
+            <p>En cuanto cerró el cuaderno, un dragón infernal se materializó y emprendió el vuelo con furia, destrozando el techo de su casa en el proceso. Al ver el caos que había desatado, Juanito se sintió abrumado por el arrepentimiento y la confusión. En medio de su desesperación, recordó que dentro del cofre había una nota a la que no le había prestado atención. Al buscarla y leerla, descubrió una advertencia crucial: cada una de sus acciones sería su absoluta responsabilidad. Asustado pero decidido a enmendar su error, reflexionó hasta que concibió un plan: crearía a un héroe capaz de derrotar a la bestia.</p>
+            <p>Regresó a su escritorio y dibujó a un semidiós, un hombre de fuerza descomunal e indestructible. Cuando el héroe cobró vida, Juanito intentó hablar con él, pero se topó con una nueva barrera: el guerrero solo hablaba latín. Sin rendirse, el niño se sumergió en el estudio de libros antiguos durante tres semanas hasta que logró dominar el idioma y explicarle la misión. El semidiós, consciente de su poder, aceptó el desafío. Localizaron al dragón mientras este asolaba la ciudad y se enzarzaron en una batalla épica que se prolongó durante dos agónicos días.</p>
+            <p>Finalmente, el héroe logró decapitar a la criatura, pero el costo fue alto: resultó herido de gravedad. Tras acercarse a Juanito para despedirse, el semidiós exhaló su último aliento y cayó sin vida.</p>
+            <p>Juanito regresó a su hogar abrumado por la culpa y el desastre causado por su propia ambición. Aunque consideró quemar el cuaderno, la tentación de seguir creando lo detuvo temporalmente. Una noche, unos ladrones irrumpieron en su casa intentando arrebatarle el libro, pero el niño logró impedirirlo justo a tiempo. Al día siguiente, comprendió el peligro que representaba aquel objeto si caía en manos equivocadas; si alguien con maldad lo poseía, podría causar la destrucción del mundo.</p>
+        </div>
+        <div class="page-num">PÁG. — 24</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 18: EL LÁPIZ QUE DIBUJA REALIDAD (PARTE 2)
+         ========================================== -->
+    <div class="page" id="p25">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XVIII (PÁG. 2)</span></div>
+        
+
+        <div class="text-body">
+            <p>Lleno de valor, Juanito viajó hasta un lugar remoto, encendió una fogata y, tras dibujar un último helado como despedida, arrojó el cuaderno a las llamas. Se sintió triste por la pérdida, pero al mismo tiempo invadido por una profunda paz, sabiendo que ya nadie podría crear algo que dañara a la humanidad. Al caer la noche, regresó a casa, se recostó en su cama y se sumergió en un sueño profundo.</p>
+            <p>A la mañana siguiente, su madre lo despertó. Al levantar la vista, Juanito notó con asombro que el techo de su habitación estaba intacto. Salió a la calle y descubrió que la ciudad lucía impecable, sin rastro de destrucción; todo lo sucedido parecía haber sido solo un sueño. Aliviado, se dirigió a la playa para descansar un rato… y allí, entre la arena, divisó nuevamente un cofre.</p>
+            <div class="ornament">✥</div>
+        </div>
+        <div class="page-num">PÁG. — 25</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 19: UN VIAJE MÁGICO DE JACKELINE
+         ========================================== -->
+    <div class="page" id="p26">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XIX</span></div>
+        
+        <h2 class="chapter-title">Un viaje mágico de Jackeline</h2>
+        <div class="author-meta">Por: Melany Simbaña</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>n el corazón de un pequeño pueblo llamado Tumbaco vivía Jackeline, una joven de quince años poseedora de una imaginación desbordante y una curiosidad que parecía no tener límites. Le apasionaba explorar los alrededores y solía perderse en sueños sobre aventuras en tierras lejanas y fantásticas. A pesar de contar con un círculo de amistades, Jackeline lidiaba con un sentimiento de vacío e incomprensión, anhelando profundamente descubrir cuál era su verdadero lugar en el mundo. Cierto día, mientras recorría los alrededores de su hogar, sus ojos se posaron en un sendero oculto que jamás había notado.</p>
+            <p>Aquel camino la condujo hasta una pequeña gruta, cuyas paredes estaban adornadas con cristales que resplandecían con luz propia. En el centro de la cueva reposaba un espejo antiguo que, al ser observado, no solo devolvía su propio reflejo, sino que proyectaba fragmentos de su vida cotidiana. A través del cristal, Jackeline se vio a sí misma en diversas facetas: brindando apoyo a sus amigas, enfrentando discusiones familiares y dedicada a sus estudios escolares. Cada una de estas visiones vibraba con una emoción distinta, desde la alegría más pura hasta la frustración y el amor. Impulsada por una fuerza desconocida, la joven tocó la superficie fría del espejo y, de inmediato, fue absorbida hacia su interior.</p>
+            <p>Se encontró entonces en un plano onírico donde cada una de las escenas que había visto en el reflejo cobraba vida ante sus ojos. Este mundo mágico le reveló una lección invaluable sobre su propia naturaleza, permitiéndole reconocer tanto sus fortalezas como sus debilidades. Comprendió que ambos aspectos eran fundamentales para su desarrollo personal. Tras lo que pareció una eternidad de aprendizaje en aquel reino fantástico, Jackeline regresó a la cueva emergiendo del espejo con un espíritu renovado y la determinación de aplicar lo aprendido en su realidad diaria.</p>
+            <p>Con el paso del tiempo, Jackeline se transformó en una figura inspiradora y una líder dentro de su comunidad, siempre dispuesta a prestar oído y auxilio a quien lo necesitara. Aquella odisea a través del espejo le otorgó la sabiduría para entender que cada vivencia, por pequeña que sea, representa una oportunidad de oro para aprender y evolucionar como ser humano.</p>
+        </div>
+        <div class="page-num">PÁG. — 26</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 20: EL MURAL DE MATÍAS
+         ========================================== -->
+    <div class="page" id="p27">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XX</span></div>
+        
+        <h2 class="chapter-title">El mural de Matías</h2>
+        <div class="author-meta">Por: Melany Simbaña</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>n un barrio donde los colores cobraban vida en cada esquina, habitaba Matías, un joven de doce años poseedor de un talento innato para el arte. Desde su infancia, se sentía profundamente atraído por los murales que decoraban las calles de su vecindario, los cuales narraban historias sobre la cultura y los sueños compartidos de la comunidad. Sin embargo, a pesar de su amor por la pintura, Matías solía dudar de sus propias habilidades y lo invadía el temor de compartir sus creaciones con el mundo.</p>
+            <p>La oportunidad de cambiar su destino llegó cuando el centro comunitario local anunció un concurso de murales juveniles en la plaza principal. Al enterarse, el joven de doce años experimentó una mezcla de emoción y nerviosismo; no obstante, impulsado por su pasión y alentado por las palabras de su abuela, tomó la valiente decisión de participar.</p>
+            <p>Matías dedicó sus días a diseñar una obra que buscaba representar la libertad y la esperanza. Eligió como figura central el vuelo de un ave, símbolo de la fuerza y la belleza de su cultura. Conforme el mural cobraba forma, los transeúntes se detenían a observar su progreso: algunos le dedicaban palabras de aliento, mientras otros contemplaban su técnica en un respetuoso silencio.</p>
+            <p>Finalmente, llegó el día de la revelación de los resultados. La plaza se encontraba repleta de personas y de obras vibrantes que reflejaban la creatividad de la juventud local. Cuando llegó el momento de presentar su trabajo, Matías se dirigió al público y, con una voz que al principio le temblaba, explicó el significado profundo de su mural: la libertad, el poder, la fuerza y la espiritualidad.</p>
+            <p>La respuesta de los presentes fue inmediata y cálida; entre aplausos y sonrisas, el joven sintió una alegría inmensa que nunca antes había experimentado. Tras ser anunciado como el ganador del primer lugar, Matías comprendió que había logrado algo mucho más grande que un premio: había superado sus miedos y se había conectado con su comunidad de una forma profundamente personal y significativa.</p>
+            <div class="ornament">❈</div>
+        </div>
+        <div class="page-num">PÁG. — 27</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 21: LA ESTRELLA QUE NUNVA VOLVIÓ
+         ========================================== -->
+    <div class="page" id="p28">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XXI</span></div>
+        
+        <h2 class="chapter-title">La estrella que nunca volvió</h2>
+        <div class="author-meta">Por: Laura Sánchez</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">C</p>
+            <p>ada noche, Hanna se apostaba junto a la ventana de su habitación para contemplar las luces de la ciudad que titilaban en la oscuridad. Una de esas noches, una estrella fugaz surcó el firmamento frente a sus ojos, y ella aprovechó el instante para susurrar un deseo profundo: “Sentirse amada”. A la mañana siguiente, despertó con un entusiasmo inusual, sintiendo que algo en el aire había cambiado. Realizó su rutina habitual, se preparó para el trabajo y salió de casa, aunque durante el trayecto la invadió la extraña sensación de sentirse observada.</p>
+            <p>Al abordar el autobús, Hanna perdió el equilibrio debido a una repentina debilidad en su pie. Justo cuando estaba a punto de caer, unos brazos fuertes la sostuvieron. Al incorporarse, se encontró frente a un joven alto, de tez clara y cabello castaño, cuya mirada tras los lentes y su sonrisa encantadora la dejaron sin aliento. Hanna, presa de los nervios, apenas pudo agradecerle antes de apresurarse a buscar un asiento, sintiendo un intenso cosquilleo en el estómago. Lo que ella ignoraba era que aquel joven compartía la misma sensación de asombro.</p>
+            <p>Durante el resto del trayecto, Hanna no apartó la vista de la ventana, sumida en sus pensamientos. Al llegar a su parada, al levantarse para descender, sus manos se rozaron accidentalmente, provocando que ambos se miraran fijamente. Ella quedó hipnotizada por sus grandes ojos verdes, enmarcados por cejas pobladas y pestañas levemente rizadas. Al bajar del autobús, suspiró con resignación pensando que no volvería a verlo jamás.</p>
+            <p>A pesar de intentar concentrarse en su jornada laboral, el recuerdo del joven no la abandonó en todo el día. De regreso a casa, lo buscó con la mirada entre la multitud del transporte, pero él no estaba allí. Al llegar, le relató lo sucedido a su madre, quien simplemente se rio y le aconsejó tener más cuidado en el futuro.</p>
+            <p>Con el paso de los días, la imagen del chico comenzó a desvanecerse, aunque Hanna mantenía una leve esperanza de encontrarlo en cada trayecto al trabajo. Un día, mientras corría apresurada para entregar unos documentos importantes, chocó de frente con alguien. Al levantar la vista, se dio cuenta de que era él. Abrumada por la vergüenza, Hanna recogió sus papeles mientras él le dedicaba una última sonrisa y unas palabras cargadas de promesa: “Espero volverte a encontrar”. Ella asintió con ilusión antes de marcharse, sin saber que el destino, al igual que la estrella de aquella noche, no volvería a cruzar sus caminos.</p>
+        </div>
+        <div class="page-num">PÁG. — 28</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 22: LA NOCHE QUE ANA NO OLVIDÓ
+         ========================================== -->
+    <div class="page" id="p29">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XXII</span></div>
+        
+        <h2 class="chapter-title">La noche que Ana no olvidó</h2>
+        <div class="author-meta">Por: Laura Sánchez</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">A</p>
+            <p>na nunca había asistido a una fiesta, y mucho menos a una de Halloween. Aquella noche, se enfrentó al dilema de no saber cómo maquillarse ni qué disfraz elegir, pero tras esforzarse al máximo, logró un resultado que la hacía sentir bien. Al llegar al evento junto a su prima, la atmósfera la envolvió de inmediato: se sentía observada, pero de una manera positiva, mientras el grupo de amigos de su prima la integraba con entusiasmo en la pista de baile.</p>
+            <p>En medio de la música y la emoción, un chico se le acercó para conversar. Ana aceptó y, aunque compartieron algunas bebidas, ella lo hizo con extrema cautela para evitar perder el control. Sin embargo, mientras bailaba con él, notó que la expresión de su prima había cambiado; una mirada de enojo y advertencia la observaba desde la distancia, lo que le sembró una inquietante duda.</p>
+            <p>Al separarse del chico, su prima le explicó el motivo de su malestar: aquel joven tenía fama de "mujeriego" en el instituto y solía aprovecharse de las chicas nuevas. Aunque Ana intentó restarle importancia y seguir disfrutando, el miedo y la desconfianza se instalaron en su pecho, provocando que rechazara a otros jóvenes que intentaron acercarse a ella.</p>
+            <p>Cuando la fiesta llegó a su fin y llegó el momento de las despedidas, el chico con el que había bailado se acercó demasiado y, sin previo aviso, le robó un beso. Ana quedó paralizada por la sorpresa y el desconcierto, antes de huir rápidamente del lugar. Afuera, su prima le recriminó no haber tenido más cuidado, recordándole que aquel sujeto no tenía derecho a actuar de esa forma.</p>
+            <p>Al regresar a casa, Ana buscó consuelo en su madre y su hermana, relatándoles lo sucedido. Ellas, con una mezcla de ternura y ligereza, se rieron y le aconsejaron que tomara lo ocurrido simplemente como una experiencia más de la vida. No obstante, para Ana, esa noche dejó una huella profunda; fue el momento en que comprendió que no siempre se tiene el control de las situaciones, guardando para siempre una mezcla de confusión, aprendizaje y la certeza de una noche que jamás lograría olvidar.</p>
+        </div>
+        <div class="page-num">PÁG. — 29</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 23: INDICIOS DEL SUEÑO I - EL PARQUE FANTÁSTICO
+         ========================================== -->
+    <div class="page" id="p30">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>SUEÑO I - EL PARQUE FANTÁSTICO</span></div>
+        
+        <h2 class="chapter-title">Indicios del sueño</h2>
+        <div class="author-meta">Por: Nicolás Armijos</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">A</p>
+            <p>noche me sumergí en un sueño sumamente extraño que, en sus primeros instantes, resultó ser una experiencia vibrante y divertida. Me encontré en un parque de dimensiones colosales junto a mis amigos, donde las atracciones surcaban el firmamento y nosotros podíamos saltar a alturas imposibles, como si las leyes de la gravedad hubieran dejado de existir. En medio de aquel asombro, descubrimos una montaña de dulces y nos entregamos al festín entre risas incesantes; en ese momento, todo parecía envuelto en una perfección absoluta.</p>
+            <p>La atmósfera cambió cuando un perro con la asombrosa capacidad de hablar se nos acercó para revelarnos la existencia de una fiesta secreta. Llenos de entusiasmo, lo seguimos hasta una mansión imponente, rebosante de luces multicolores y melodías que nos invitaron a bailar sin descanso en un ambiente de total alegría.</p>
+            <p>Sin embargo, la ensoñación comenzó a tornarse lúgubre de manera repentina. Las luces se extinguieron una tras otra, mientras la música se deformaba en un ritmo lento y desagradable. De pronto, me hallé en la más absoluta soledad; mis amigos se habían desvanecido y el perro, cuya voz se había vuelto gélida y autoritaria, me sentenció que no tenía permitido abandonar el lugar. Al intentar huir, descubrí con desesperación que la puerta estaba bajo llave, al tiempo que el sonido de pasos pesados y arrastrados provenientes del piso superior aumentaba mi angustia.</p>
+            <p>Preso del pánico, intentaba despertar sin éxito de aquella pesadilla que se negaba a soltarme. Justo cuando la oscuridad se volvió total y sentí la presencia inquietante de alguien acechando justo a mis espaldas, hice un último esfuerzo por volver a la realidad. Al girarme para enfrentar lo desconocido, desperté de golpe, con el corazón martilleando frenéticamente contra mi pecho.</p>
+            <div class="ornament">❦</div>
+        </div>
+        <div class="page-num">PÁG. — 30</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 23: INDICIOS DEL SUEÑO II - EL AUTOBÚS DE LA DERIVA
+         ========================================== -->
+    <div class="page" id="p31">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>SUEÑO II - EL AUTOBÚS DE LA DERIVA</span></div>
+        
+        <h2 class="chapter-title">Indicios del sueño</h2>
+        <div class="author-meta">Por: Nicolás Armijos</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">C</p>
+            <p>ierto día, al salir del colegio completamente agotado, abordé el autobús con el único deseo de llegar finalmente a descansar. Debido al calor sofocante que había imperado durante toda la jornada, busqué refugio en un asiento junto a la ventana; allí, el arrullo del movimiento y mi propio cansancio me vencieron, haciéndome caer en un sueño profundo casi de inmediato.</p>
+            <p>Al abrir los ojos, el panorama había cambiado drásticamente: el vehículo estaba prácticamente desierto y, al observar a través del cristal, las calles y los comercios me resultaron totalmente ajenos. Fue en ese instante cuando comprendí, con una punzada de temor, que me había pasado de mi parada y me encontraba en un sector de la ciudad que jamás había visitado. El conductor, al notar mi desconcierto, me preguntó si estaba perdido; tras explicarle que el sueño me había traicionado, él soltó una carcajada y exclamó con asombro: “¡Chuta, te pasaste lejísimos!”.</p>
+            <p>Amablemente, el señor me explicó qué otra línea debía tomar para desandar el camino. Mientras aguardaba en la parada, contemplé el ajetreo de la zona: motocicletas y autos pasaban sin cesar, mientras el aroma de bolones y empanadas recién preparadas inundaba el aire desde los puestos de venta callejera.</p>
+            <p>Finalmente logré emprender el regreso, aunque el trayecto fue largo y llegué a mi hogar sumamente tarde. Mi madre, cuya preocupación era evidente, me recibió con un interrogatorio inmediato sobre mi paradero. Con honestidad, solo pude explicarle que me había quedado dormido en el autobús y que, sin planearlo, terminé perdido por media ciudad antes de lograr encontrar el camino de vuelta a casa.</p>
+            <div class="ornament">✥</div>
+        </div>
+        <div class="page-num">PÁG. — 31</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 24: EL BOSQUE ENCANTADO
+         ========================================== -->
+    <div class="page" id="p32">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XXIV</span></div>
+        
+        <h2 class="chapter-title">El bosque encantado</h2>
+        <div class="author-meta">Por: Asaf Pintag</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>n una jornada que no destacaba por ser precisamente buena, un niño llamado José decidió alejarse de la monotonía de su hogar para adentrarse en la espesura de un bosque cercano. Mientras exploraba, un susurro melódico llamó su atención desde un lago que, según las leyendas locales, ocultaba antiguos encantamientos. Impulsado por una mezcla de temor y un irresistible deseo de aventura, José se aproximó a la orilla y contempló con asombro a unos seres de aspecto similar a los duendes, quienes danzaban y celebraban con alegría desbordante.</p>
+            <p>El niño intentó observar la escena oculto entre las sombras, pero al acercarse apenas unos centímetros, fue descubierto. En ese instante, la tierra pareció cobrar vida propia: unas raíces brotaron del suelo, sujetándolo con firmeza por los tobillos y arrastrándolo lentamente hacia el interior de una cueva. José comprendió de inmediato que el camino de regreso a casa no sería sencillo y que estaba a punto de iniciar una travesía inesperada.</p>
+            <p>Al final del túnel, se encontró en una cavidad iluminada por el brillo hipnótico de cristales mágicos incrustados en las paredes pétreas. Los duendes, tras un breve momento de desconcierto, lo recibieron con risas y júbilo, como si su llegada fuera un evento largamente aguardado. One of them, el más pequeño y de cabellos dorados, se le acercó para infundirle calma: “No temas, niño valiente. Has sido elegido para participar en nuestra fiesta, pero también para ayudarnos con una misión importante”.</p>
+            <p>Con atención, José escuchó cómo el lago había perdido su esencia mágica debido a un oscuro hechizo lanzado por un ser que habitaba en lo más profundo del bosque. Sin esa magia, la alegría de los duendes y su propio hogar estaban condenados a desaparecer. La tarea era clara: debía encontrar el amuleto perdido oculto en el corazón del bosque para restaurar el equilibrio y ganar así su derecho a volver a casa.</p>
+            <p>Inspirado por un nuevo brote de valentía, José aceptó el desafío. Junto a sus nuevos compañeros, se internó en la penumbra del bosque, donde los árboles parecían susurrar secretos y las sombras cobraban vida a su alrededor. Con cada paso, el niño comprendió que aquel viaje no era solo una prueba de fuerza, sino una oportunidad única para descubrir su propio valor y la verdadera esencia de la amistad.</p>
+        </div>
+        <div class="page-num">PÁG. — 32</div>
+    </div>
+
+    <!-- ==========================================
+         CUENTO 25: SOMBRAS EN LA CABAÑA
+         ========================================== -->
+    <div class="page" id="p33">
+        <div class="corner t-l"></div><div class="corner t-r"></div>
+        <div class="corner b-l"></div><div class="corner b-r"></div>
+        <div class="header-meta"><span>COMPENDIO PPE</span><span>RELATO XXV</span></div>
+        
+        <h2 class="chapter-title">Sombras en la cabaña</h2>
+        <div class="author-meta">Por: Asaf Pintag</div>
+
+        <div class="text-body">
+            <p class="drop-cap no-indent">E</p>
+            <p>n una choza oculta por la espesura de un bosque abrumador, a las orillas de un lago, vivía un anciano con porte de antiguo explorador. Sus días transcurrían narrando historias de las fascinantes aventuras que, según decía, marcaron su juventud. Sin embargo, un día el misterio se apoderó del lugar: el anciano desapareció sin dejar rastro alguno, ni en su pequeña morada, ni en el mercado, ni en los rincones del pueblo. La comunidad quedó desconcertada ante la ausencia de aquel hombre tan amigable. Pasaron seis largos años y, ante la falta de pistas, la investigación oficial se detuvo.</p>
+            <p>Yo era un amigo muy cercano de aquel hombre, llamado Alberto; sus relatos solían ser mi refugio en los momentos de tristeza. Su desaparición me afectó tanto que mis padres decidieron enviarme durante seis años a otro pueblo con mis tíos. Al cumplir los dieciocho años, regresé al hogar de mis padres, pero la duda sobre el destino de Alberto seguía atormentándome.</p>
+            <p>Decidido a encontrar respuestas, me adentré en el bosque en busca de pistas. Los árboles, espesos y pantanosos, parecían vigilar cada uno de mis pasos. Al llegar a la cabaña, el aroma a tierra mojada impregnaba el aire y el viento retumbaba con fuerza contra los vidrios de la choza. Al acercarme al lago, busqué mi reflejo en el agua, pero lo que vi no fue mi rostro: la imagen que me devolvió el espejo líquido era la de Alberto. Aterrorizado, volví la mirada hacia la cabaña y divisé una sombra que me observaba desde el interior.</p>
+            <p>Huí de aquel lugar y les conté todo a mis padres, pero ellos no me creyeron. Me instaron a olvidar el pasado, revelándome que el cuerpo de Alberto había sido hallado en el lago poco después de su desaparición y que los rescatistas dictaminaron que había muerto por ahogamiento. No podía dar crédito a sus palabras, pues yo mismo había visto esa sombra en la choza.</p>
+            <p>Al día siguiente, busqué a mis antiguos amigos y les relaté mi experiencia. Ellos, que también habían tenido sus propias aventuras cerca de la cabaña, me creyeron de inmediato. Juntos, nos adentramos nuevamente en el denso bosque hasta llegar a la pequeña vivienda de Alberto. Al entrar, vimos que todo seguía igual: su sofá, sus utensilios y su cocina. Sin embargo, al ingresar al dormitorio, notamos un bulto bajo las cobijas de la cama. Con el corazón en un puño, alzamos las mantas y encontramos el cadáver del señor Alberto.</p>
+            <p>El horror nos invadió al comprender la contradicción: nuestros padres aseguraban que se lo habían llevado a la morgue años atrás. En ese instante, vimos cómo una sombra se aproximaba lentamente hacia nosotros. Nuestros gritos de auxilio fueron interrumpidos por la entrada de un hombre de barba larga que empuñaba una escopeta. Lo último que recuerdo es que caímos desmayados; al despertar en el pueblo, nos dimos cuenta de que faltaba uno de nuestros compañeros. Dos días después, regresamos a la choza por última vez. A través de la ventana, fuimos testigos de una escena irreal: vimos a Alberto abrazando a nuestro amigo desaparecido, justo antes de que ambos se desvanecieran en la nada. Cuando los padres de nuestro compañero nos preguntaron por él, solo pudimos responder, con el alma rota, que se había marchado para ya no regresar.</p>
+        </div>
+        <div class="page-num">PÁG. — 33</div>
+    </div>
+    <!-- CONTRAPORTADA -->
+    <div class="page-img">
+        <img src="https://i.imgur.com/aBvE9Hi.jpeg" class="full-page-img" alt="Portada del libro">
+    </div>
+
+</body>
+</html>
